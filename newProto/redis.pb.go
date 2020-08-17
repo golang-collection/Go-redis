@@ -4,7 +4,7 @@
 // 	protoc        v3.11.4
 // source: proto/redis.proto
 
-package proto
+package newProto
 
 import (
 	proto "github.com/golang/protobuf/proto"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GO-redis/proto"
+	"GO-redis/newProto"
 	"context"
 	"fmt"
 	"github.com/micro/go-micro/v2"
@@ -25,8 +25,8 @@ func main() {
 }
 
 func SetString(service micro.Service){
-	redisOP := proto.NewRedisOperationService("go.micro.service.redis", service.Client())
-	rsp, err := redisOP.SetString(context.TODO(), &proto.SetStringRequest{Key:"s1", Value:"lala"})
+	redisOP := newProto.NewRedisOperationService("go.micro.service.redis", service.Client())
+	rsp, err := redisOP.SetString(context.TODO(), &newProto.SetStringRequest{Key: "s1", Value:"lala"})
 	if err != nil{
 		fmt.Println(err)
 	}
@@ -34,8 +34,8 @@ func SetString(service micro.Service){
 }
 
 func GetString(service micro.Service){
-	redisOP := proto.NewRedisOperationService("go.micro.service.redis", service.Client())
-	rsp, err := redisOP.GetString(context.TODO(), &proto.GetStringRequest{Key:"s1"})
+	redisOP := newProto.NewRedisOperationService("go.micro.service.redis", service.Client())
+	rsp, err := redisOP.GetString(context.TODO(), &newProto.GetStringRequest{Key: "s1"})
 	if err != nil{
 		fmt.Println(err)
 	}

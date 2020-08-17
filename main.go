@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GO-redis/proto"
+	"GO-redis/newProto"
 	"GO-redis/server"
 	"fmt"
 	"github.com/micro/go-micro/v2"
@@ -23,7 +23,7 @@ func main() {
 	service.Init()
 
 	// 注册处理器
-	proto.RegisterRedisOperationHandler(service.Server(), new(server.RedisStruct))
+	newProto.RegisterRedisOperationHandler(service.Server(), new(server.RedisStruct))
 
 	// 运行服务
 	if err := service.Run(); err != nil {
