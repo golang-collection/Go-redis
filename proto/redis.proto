@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = ".;proto";
+
+service RedisOperation {
+	rpc SetString(SetStringRequest) returns (SetStringResponse) {}
+	rpc GetString(GetStringRequest) returns (GetStringResponse) {}
+}
+
+message SetStringRequest {
+	string key = 1;
+	string value = 2;
+}
+
+message SetStringResponse {
+	string result = 1;
+}
+
+message GetStringRequest {
+	string key = 1;
+}
+
+message GetStringResponse {
+	string result = 1;
+}
