@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = ".;newProto";
+option go_package = ".;proto";
 
 service RedisOperation {
 	rpc SetString(SetStringRequest) returns (SetStringResponse) {}

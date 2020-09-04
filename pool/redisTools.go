@@ -1,9 +1,9 @@
-package tools
+package pool
 
 import (
-	"GO-redis/config"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
+	"github.com/spf13/viper"
 	"time"
 )
 
@@ -22,7 +22,7 @@ func newRedisPool() *redis.Pool{
 		MaxActive:30,
 		IdleTimeout:300*time.Second,
 		Dial: func() (redis.Conn, error) {
-			conn, err := redis.Dial("tcp", config.RedisHost)
+			conn, err := redis.Dial("tcp", viper.GetString("url"))
 			if err != nil{
 				fmt.Println(err.Error())
 				return nil, err

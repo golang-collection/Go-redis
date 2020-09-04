@@ -1,8 +1,8 @@
 package server
 
 import (
-	"GO-redis/newProto"
-	"GO-redis/tools"
+	"GO-redis/pool"
+	"GO-redis/proto"
 	"context"
 	"github.com/garyburd/redigo/redis"
 )
@@ -13,24 +13,24 @@ import (
 * @Description:
 **/
 
-type RedisStruct struct {
+type Redis struct {
 }
 
-func (redisstruct *RedisStruct)SetString(ctx context.Context, req *newProto.SetStringRequest, res *newProto.SetStringResponse) error {
-	c := tools.GetConn()
+func (r *Redis) SetString(ctx context.Context, req *proto.SetStringRequest, res *proto.SetStringResponse) error {
+	c := pool.GetConn()
 
 	str, err := redis.String(c.Do("set", req.Key, req.Value))
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	res.Result = str
 	return nil
 }
 
-func (redisstruct *RedisStruct)GetString(ctx context.Context, req *newProto.GetStringRequest, res *newProto.GetStringResponse) error {
-	c := tools.GetConn()
+func (r *Redis) GetString(ctx context.Context, req *proto.GetStringRequest, res *proto.GetStringResponse) error {
+	c := pool.GetConn()
 	str, err := redis.String(c.Do("get", req.Key))
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	res.Result = str

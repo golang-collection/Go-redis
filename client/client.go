@@ -1,10 +1,11 @@
 package main
 
 import (
-	"GO-redis/newProto"
+	"GO-redis/proto"
 	"context"
-	"fmt"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-plugins/registry/consul/v2"
 )
 
 /**
@@ -13,31 +14,36 @@ import (
 * @Description:
 **/
 
+var redisOP proto.RedisOperationService
+
 func main() {
+	reg := consul.NewRegistry(func(options *registry.Options) {
+		options.Addrs = []string{
+			"127.0.0.1:8500",
+		}
+	})
+
 	service := micro.NewService(
+		micro.Registry(reg),
 		micro.Name("go.micro.service.redis.client"),
 	)
 	service.Init()
 
-	SetString(service)
-	GetString(service)
-
+	redisOP = proto.NewRedisOperationService("go.micro.service.redis", service.Client())
 }
 
-func SetString(service micro.Service){
-	redisOP := newProto.NewRedisOperationService("go.micro.service.redis", service.Client())
-	rsp, err := redisOP.SetString(context.TODO(), &newProto.SetStringRequest{Key: "s1", Value:"lala"})
-	if err != nil{
-		fmt.Println(err)
+func SetString(key string, value string) (string, error) {
+	rsp, err := redisOP.SetString(context.Background(), &proto.SetStringRequest{Key: key, Value: value})
+	if err != nil {
+		return "", err
 	}
-	fmt.Println(rsp.Result)
+	return rsp.Result, nil
 }
 
-func GetString(service micro.Service){
-	redisOP := newProto.NewRedisOperationService("go.micro.service.redis", service.Client())
-	rsp, err := redisOP.GetString(context.TODO(), &newProto.GetStringRequest{Key: "s1"})
-	if err != nil{
-		fmt.Println(err)
+func GetString(key string) (string, error) {
+	rsp, err := redisOP.GetString(context.TODO(), &proto.GetStringRequest{Key: key})
+	if err != nil {
+		return "", nil
 	}
-	fmt.Println(rsp.Result)
+	return rsp.Result, nil
 }

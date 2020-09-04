@@ -1,10 +1,12 @@
 package main
 
 import (
-	"GO-redis/newProto"
+	"GO-redis/proto"
 	"GO-redis/server"
-	"fmt"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-plugins/registry/consul/v2"
+	"log"
 	"time"
 )
 
@@ -15,7 +17,14 @@ import (
 **/
 
 func main() {
+	reg := consul.NewRegistry(func(options *registry.Options) {
+		options.Addrs = []string{
+			"127.0.0.1:8500",
+		}
+	})
+
 	service := micro.NewService(
+		micro.Registry(reg),
 		micro.Name("go.micro.service.redis"),
 		micro.RegisterTTL(time.Second*10),
 		micro.RegisterInterval(time.Second*5),
@@ -23,10 +32,14 @@ func main() {
 	service.Init()
 
 	// 注册处理器
-	newProto.RegisterRedisOperationHandler(service.Server(), new(server.RedisStruct))
+	err := proto.RegisterRedisOperationHandler(service.Server(), new(server.Redis))
+	if err != nil{
+		log.Println(err)
+		return
+	}
 
 	// 运行服务
 	if err := service.Run(); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 }

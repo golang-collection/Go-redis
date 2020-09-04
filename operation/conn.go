@@ -1,7 +1,7 @@
-package conn
+package operation
 
 import (
-	"GO-redis/tools"
+	"GO-redis/pool"
 	"github.com/garyburd/redigo/redis"
 )
 
@@ -12,7 +12,7 @@ import (
 **/
 
 func SetString(key string, value string) (string, error) {
-	c := tools.GetConn()
+	c := pool.GetConn()
 
 	str, err := redis.String(c.Do("set", key, value))
 	if err != nil{
@@ -22,7 +22,7 @@ func SetString(key string, value string) (string, error) {
 }
 
 func GetString(key string) (string, error){
-	c := tools.GetConn()
+	c := pool.GetConn()
 	str, err := redis.String(c.Do("get", key))
 	if err != nil{
 		return "", err
@@ -31,7 +31,7 @@ func GetString(key string) (string, error){
 }
 
 func AddElementToSet(key string, value string) (int, error) {
-	c := tools.GetConn()
+	c := pool.GetConn()
 
 	result, err := redis.Int(c.Do("sadd", key, value))
 	if err != nil{
@@ -41,7 +41,7 @@ func AddElementToSet(key string, value string) (int, error) {
 }
 
 func ElementIsInSet(key string, value string) (bool, error){
-	c := tools.GetConn()
+	c := pool.GetConn()
 	result, err := redis.Int(c.Do("sismember", key, value))
 	if err != nil{
 		return false, err
