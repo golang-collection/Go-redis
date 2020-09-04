@@ -13,7 +13,7 @@ import (
 
 func TestSetString(t *testing.T) {
 	s, err := SetString("s1", "sssss")
-	if err != nil{
+	if err != nil {
 		t.FailNow()
 	}
 	fmt.Println(s)
@@ -21,7 +21,7 @@ func TestSetString(t *testing.T) {
 
 func TestGetString(t *testing.T) {
 	s, err := GetString("s1")
-	if err != nil{
+	if err != nil {
 		t.FailNow()
 	}
 	fmt.Println(s)
@@ -29,7 +29,7 @@ func TestGetString(t *testing.T) {
 
 func TestAddElementToSet(t *testing.T) {
 	s, err := AddElementToSet("myset", "a")
-	if err != nil{
+	if err != nil {
 		t.FailNow()
 	}
 	fmt.Println(s)
@@ -37,7 +37,7 @@ func TestAddElementToSet(t *testing.T) {
 
 func TestElementIsInSet(t *testing.T) {
 	s, err := ElementIsInSet("myset", "b")
-	if err != nil{
+	if err != nil {
 		t.FailNow()
 	}
 	fmt.Println(s)

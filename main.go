@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GO-redis/config"
 	"GO-redis/proto"
 	"GO-redis/server"
 	"github.com/micro/go-micro/v2"
@@ -17,6 +18,13 @@ import (
 **/
 
 func main() {
+
+	//init config
+	if err := config.Init("remote"); err != nil {
+		log.Println(err)
+		panic(err)
+	}
+
 	reg := consul.NewRegistry(func(options *registry.Options) {
 		options.Addrs = []string{
 			"127.0.0.1:8500",
@@ -33,7 +41,7 @@ func main() {
 
 	// 注册处理器
 	err := proto.RegisterRedisOperationHandler(service.Server(), new(server.Redis))
-	if err != nil{
+	if err != nil {
 		log.Println(err)
 		return
 	}

@@ -16,21 +16,21 @@ import (
 var pool *redis.Pool
 
 //创建redis连接池
-func newRedisPool() *redis.Pool{
+func newRedisPool() *redis.Pool {
 	return &redis.Pool{
-		MaxIdle:50,
-		MaxActive:30,
-		IdleTimeout:300*time.Second,
+		MaxIdle:     50,
+		MaxActive:   30,
+		IdleTimeout: 300 * time.Second,
 		Dial: func() (redis.Conn, error) {
 			conn, err := redis.Dial("tcp", viper.GetString("url"))
-			if err != nil{
+			if err != nil {
 				fmt.Println(err.Error())
 				return nil, err
 			}
 			return conn, nil
 		},
 		TestOnBorrow: func(conn redis.Conn, t time.Time) error {
-			if time.Since(t) < time.Minute{
+			if time.Since(t) < time.Minute {
 				return nil
 			}
 			_, err := conn.Do("PING")
@@ -39,10 +39,10 @@ func newRedisPool() *redis.Pool{
 	}
 }
 
-func init(){
+func init() {
 	pool = newRedisPool()
 }
 
-func GetConn() redis.Conn{
+func GetConn() redis.Conn {
 	return pool.Get()
 }

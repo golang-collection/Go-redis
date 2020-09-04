@@ -9,7 +9,7 @@ import (
 /**
 * @Author: super
 * @Date: 2020-09-04 18:20
-* @Description:
+* @Description: 读取远程配置文件
 **/
 
 type Config struct {
