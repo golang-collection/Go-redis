@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	_ "github.com/spf13/viper/remote"
 	"log"
 )
 
@@ -33,14 +34,13 @@ func Init(cfg string) error {
 }
 
 func (c *Config) initConfig() error {
-	err := viper.AddRemoteProvider("consul", "127.0.0.1:8500", "redis/config")
+	err := viper.AddRemoteProvider("consul", CONSUL_URL, CONSUL_CONFIG)
 	if err != nil {
-		log.Println("read config", err)
 		return err
 	}
 	viper.SetConfigType("json") // Need to explicitly set this to json
-	if err := viper.ReadRemoteConfig(); err != nil {
-		log.Println("read config", err)
+	err = viper.ReadRemoteConfig()
+	if err != nil {
 		return err
 	}
 	return nil
